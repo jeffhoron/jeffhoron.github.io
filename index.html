@@ -1,1 +1,249 @@
-hello
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Jeff Horon</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+<link rel="icon" href="favicon.ico" type="image/ico">
+<link type="text/css" rel="stylesheet" href="style.css">
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-12710912-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-12710912-3');
+</script>
+   
+</head>
+
+<body>
+    
+<script type="module">
+    
+    import * as THREE from './three.module.js';
+    import { OrbitControls } from './OrbitControls.js';
+    
+var scene = new THREE.Scene();
+    scene.background = new THREE.Color( 0xFFFFFF );				
+    
+var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+    camera.position.z = 15;
+    camera.position.y = 10;
+    camera.position.x = -0.5;
+ 
+var renderer = new THREE.WebGLRenderer( { antialias: true } );
+renderer.setSize( window.innerWidth, window.innerHeight );
+//    renderer.setPixelRatio( window.devicePixelRatio );
+renderer.shadowMap.enabled = true;
+document.body.appendChild( renderer.domElement );
+
+var controls = new OrbitControls( camera, renderer.domElement );
+	controls.minDistance = 0.1;
+	controls.maxDistance = 1000;
+    controls.target.set(0,7,0);
+    controls.update();
+    
+//var geometry = new THREE.BoxGeometry( 1, 1, 1 );
+//    var material = new THREE.MeshPhongMaterial( { color: 0x444444 } );
+//    var cube = new THREE.Mesh( geometry, material );
+//    cube.position.y = 7
+//    cube.castShadow = true;
+//    scene.add( cube );
+
+scene.add( new THREE.AmbientLight( 0xFFFFFF ) );
+				var light = new THREE.SpotLight( 0xffffff, 1.5 );
+				light.position.set( 0, 40, 5 );
+				light.angle = Math.PI * 0.9;
+				light.castShadow = true;
+				light.shadow.camera.near = 2;
+				light.shadow.camera.far = 100;
+				light.shadow.bias = - 0.000222;
+				light.shadow.mapSize.width = 1024;
+				light.shadow.mapSize.height = 1024;
+				scene.add( light );
+
+var planeGeometry = new THREE.PlaneBufferGeometry( 50, 50 );
+				planeGeometry.rotateX( - Math.PI / 2 );
+				var planeMaterial = new THREE.ShadowMaterial( { opacity: 0.2 } );
+
+				var plane = new THREE.Mesh( planeGeometry, planeMaterial );
+				plane.position.y = 0;
+				plane.receiveShadow = true;
+				scene.add( plane );
+
+				var helper = new THREE.GridHelper( 20, 50 );
+				helper.position.y = 0;
+				helper.material.opacity = 0.25;
+				helper.material.transparent = true;
+                helper.rotateY(- Math.PI / 4);
+				scene.add( helper );
+
+    var loader = new THREE.FontLoader();
+    loader.load( './droid_sans_bold.json', function ( font ) {
+        
+        function makeText (text, size, height, color,x,y,z,link) {
+        
+        var geometry = new THREE.TextGeometry(text, {            
+        font: font,
+		size: size,
+		height: height,
+	   } );
+    
+        var material = new THREE.MeshLambertMaterial({color: color});
+        var mesh = new THREE.Mesh (geometry, material);
+        mesh.position.x = x;
+        mesh.position.y = y;
+        mesh.position.z = z;
+        mesh.userData = { URL: link};     
+            
+        mesh.castShadow = true;
+             
+        scene.add(mesh);
+    }
+    
+    makeText ("Jeff Horon", 0.5,0.1,0x000000,-4.5,15,0);
+    makeText ("Portfolio", 0.4, 0.1, 0x222222, -4, 14, 0);
+    makeText("Excursion Gear",0.25,0.1,0xFFFFFF,-3.5,11.7,0,"http://excursiongear.com");
+    makeText("(my travel store)",0.15,0.05,0x444444,-2.5,11.2,0,"http://excursiongear.com");
+        makeText("Study of International Aid in Vanuatu",0.15,0.05,0xFFFFFF,-4.9,8.9,0,"https://figshare.com/articles/Analysis_of_Jayaraman_T_K_and_Ward_B_D_Economic_Growth_in_a_Vulnerable_Island_Nation_An_Empirical_Study_of_the_Aid-Growth_Nexus_in_Vanuatu_Asia-Pacific_Development_Journal_Vol_13_No_2_December_2006_with_updates_to_2014_/11881455");
+    makeText("Additional Work",0.2,.1,0x444444,-4.75,7.75,0,"http://figshare.com/authors/Jeff_Horon/8364345");
+    makeText ("Curriculum Vitae",0.2,.1,0x444444,-4.75,6.5,0,"./cv.pdf");
+    makeText ("Tools",0.4, 0.1, 0x222222, 0.5, 14, 0);
+        makeText("Excel/VBA Text Mining",0.2,0.05,0x444444,0.8,13.2,0,"https://umich.flintbox.com/?4730#technologies/a07101b3-ae04-4853-bf76-7439bcc6d8a3");
+        makeText("Excel Chart Templates",0.2,0.05,0x444444,0.8,10.3,0,"https://figshare.com/articles/Excel_Chart_Templates/11750418");
+        makeText("Intro to Network Analysis",0.2,0.05,0x444444,0.8,7.15,0,"https://figshare.com/articles/Approachable_Network_Analysis/11741634");
+    makeText ("Contact",0.4, 0.1, 0x222222, -4, 5, 0);
+    makeText ("me",0.2,0.05,0x444444,-3.5,4.5,0);
+    makeText ("Excursion Gear",0.2,0.05,0x444444,0,4.5,0,"http://excursiongear.com");
+        
+  } );     
+    
+function makePlane (width, height, imagefile, x, y, z, link) {
+    
+    var geometry = new THREE.PlaneGeometry( width, height );
+    var texture = new THREE.TextureLoader().load( imagefile );
+
+    var material = new THREE.MeshBasicMaterial( { map: texture, side: THREE.DoubleSide } );
+    
+    var plane = new THREE.Mesh( geometry, material );
+    plane.position.x = x;
+    plane.position.y = y;
+    plane.position.z = z;
+    
+    plane.castShadow = true;
+    
+    plane.userData = { URL: link};
+        
+    scene.add( plane );
+    
+}
+
+    makePlane(2*2.37,2,'./excursiongear.png',-3,12.5,0,"http://excursiongear.com");
+    makePlane(4,2,'./vanuatuonmap.png',-3,9.8,0,"https://figshare.com/articles/Analysis_of_Jayaraman_T_K_and_Ward_B_D_Economic_Growth_in_a_Vulnerable_Island_Nation_An_Empirical_Study_of_the_Aid-Growth_Nexus_in_Vanuatu_Asia-Pacific_Development_Journal_Vol_13_No_2_December_2006_with_updates_to_2014_/11881455");
+    makePlane(1,1,'./figshare.png',-2,7.9,0,"http://figshare.com/authors/Jeff_Horon/8364345");
+    makePlane(0.75,0.75,'./cvdownload.png',-2,6.6,0,'./cv.pdf');
+    
+    makePlane(2.5,2.5,'./exceltextmining.png',2,12,0,"https://umich.flintbox.com/?4730#technologies/a07101b3-ae04-4853-bf76-7439bcc6d8a3");
+    makePlane(2.5*1.25,2.5,'./charttemplates.png',2,9,0,"https://figshare.com/articles/Excel_Chart_Templates/11750418");
+    makePlane(2.5,2.5,'./networkanalysis.png',2,6,0,"https://figshare.com/articles/Approachable_Network_Analysis/11741634");
+    
+    makePlane(1.4,0.8,'./email.png',-3.5,3.5,0,"mailto:jhoron@umich.edu");
+    makePlane(1.4,0.9,'./phone.png',-3.5,2.25,0,"tel:17342195008");
+    
+    makePlane(1,1,'./linkedin.png',-2,3.5,0,"http://linkedin.com/in/jeffhoron");
+    makePlane (1,1,'./quora.jpg',-2,2.25,0,"http://www.quora.com/profile/jeff-horon");
+    makePlane(1,1,'./twitter.png',-2,1,0,"http://twitter.com/jeffhoron");
+    
+    makePlane(1,1,'./shop.png',0.75,3.5,0,"http://excursiongear.com");
+    makePlane(1,1,'./blog.png',0.75,2.25,0,"http://excursiongear.com/blogs/excursions");
+    makePlane(1,1,'./atom.png',0.75,1,0,"http://excursiongear.com/blogs/excursions.atom");
+    
+    
+    makePlane(1,1,'./instagram.png',2,3.5,0,"http://instagram.com/excursiongear");
+    makePlane(1,1,'./facebook.png',2,2.25,0,"http://www.facebook.com/excursiongear");
+    makePlane(1,1,'./linkedin.png',2,1,0,"http://linkedin.com/company/excursiongear");
+    
+    makePlane(1,1,'./youtube.png',3.25,3.5,0,"http://www.youtube.com/channel/UCPnepJwDhWUN0y1HFeelV9w");
+    makePlane(1,1,'./twitter.png',3.25,2.25,0,"http://twitter.com/excursion_gear");
+    makePlane(1,1,'./pinterest.png',3.25,1,0,"http://www.pinterest.com/excursiongear");
+            
+    makePlane(1,1,'./tumblr.png',4.5,3.5,0,"http://excursiongear.tumblr.com/");
+    makePlane(1,1,'./snapcode.png',4.5,2.25,0,"http://www.snapchat.com/add/excursiongear");
+    makePlane(1,1,'./tiktok.png',4.5,1,0,"http://www.tiktok.com/@excursiongear");
+            
+    
+    
+controls.addEventListener( 'change', update );
+
+window.addEventListener( 'resize', onWindowResize, false );
+
+	function onWindowResize() {
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+}
+
+var raycaster = new THREE.Raycaster();
+    var mouse = new THREE.Vector2();
+ 
+function onMouseMove( event ) {
+
+  	mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+	mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+    //        intersects[0].object.material.emissive.setHex(0xFF0000);
+    // neon yellow green: 0xB1FF32 
+        
+    }
+    
+window.addEventListener( 'mousemove', onMouseMove, false );
+  
+function onClick(event){
+    raycaster.setFromCamera( mouse, camera );
+    var intersects = raycaster.intersectObjects( scene.children, false );
+    if (intersects.length > 0) {
+       if(intersects[0].object.userData.URL != null){
+ window.open(intersects[0].object.userData.URL);}
+ 	}
+}
+    
+renderer.domElement.addEventListener("click", onClick, true);
+    
+var update = function () {
+	
+    requestAnimationFrame( update );
+   
+	renderer.render( scene, camera );
+    
+};
+
+update();
+    
+</script>
+    
+<noscript>
+
+<h1>This page requires JavaScript<h1>
+
+<h2>Contact</h2>
+		<h3><a href="http://linkedin.com/in/jeffhoron">LinkedIn</a></h3>
+		<h3><a href="http://www.quora.com/profile/jeff-horon">Quora</a></h3>
+		<h3><a href="http://twitter.com/jeffhoron">Twitter</a></h3>
+		<h3><a href="http://excursiongear.com">Excursion Gear (my travel store)</a></h3>
+			<h4><a href="http://www.youtube.com/channel/UCPnepJwDhWUN0y1HFeelV9w">YouTube</a></h4>
+			<h4><a href="http://instagram.com/excursiongear">Instagram</a></h4>
+			<h4><a href="http://facebook.com/excursiongear">Facebook</a></h4>
+			<h4><a href="http://twitter.com/excursion_gear">Twitter</a></h4>
+			<h4><a href="http://pinterest.com/excursiongear">Pinterest</a></h4>
+			<h4><a href="http://excursiongear.tumblr.com">Tumblr</a></h4>
+			<h4><a href="http://snapchat.com/add/excursiongear">Snapchat</a></h4>
+			<h4><a href="http://excursiongear.com/blogs/excursions">Blog</a></h4>
+	
+</noscript>
+    
+</body>
+
+</html>
