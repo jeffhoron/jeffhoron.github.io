@@ -212,21 +212,20 @@ function onClick(event){
     
 renderer.domElement.addEventListener("click", onClick, true);
 
-    renderer.domElement.addEventListener('touchstart', onTouch, false);
+    renderer.domElement.addEventListener('touchend', onTouch, false);
     
     
-    function onTouch(event){
+function onTouch(event){
         
  mouse.x = +(event.targetTouches[0].pageX / window.innerWidth) * 2 +-1;
+ mouse.y = -(event.targetTouches[0].pageY / window.innerHeight) * 2 + 1;
 
-mouse.y = -(event.targetTouches[0].pageY / window.innerHeight) * 2 + 1;
-
-        raycaster.setFromCamera( mouse, camera );
-          var intersects = raycaster.intersectObjects( scene.children, false );
+ raycaster.setFromCamera( mouse, camera );
+ 
+var intersects = raycaster.intersectObjects( scene.children, false );
     if (intersects.length > 0) {
        if(intersects[0].object.userData.URL != null){
- window.open(intersects[0].object.userData.URL);}
-        
+           window.open(intersects[0].object.userData.URL);}
         
     }
     
