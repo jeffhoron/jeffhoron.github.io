@@ -212,14 +212,16 @@ function onClick(event){
     
 renderer.domElement.addEventListener("click", onClick, true);
 
-    document.addEventListener('touchend', onTouch, false);
+    renderer.domElement.addEventListener('touchstart', onTouch, false);
     
     
     function onTouch(event){
         
-        mouse.x = (event.changedTouches[0].clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(event.changedTouches[0].clientY / window.innerHeight) * 2 + 1;
+ mouse.x = +(event.targetTouches[0].pageX / window.innerWidth) * 2 +-1;
 
+mouse.y = -(event.targetTouches[0].pageY / window.innerHeight) * 2 + 1;
+
+        raycaster.setFromCamera( mouse, camera );
           var intersects = raycaster.intersectObjects( scene.children, false );
     if (intersects.length > 0) {
        if(intersects[0].object.userData.URL != null){
