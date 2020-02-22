@@ -318,6 +318,8 @@ var OrbitControls = function ( object, domElement ) {
 	var dollyStart = new Vector2();
 	var dollyEnd = new Vector2();
 	var dollyDelta = new Vector2();
+    
+ 
 
 	function getAutoRotationAngle() {
 
@@ -544,7 +546,7 @@ var OrbitControls = function ( object, domElement ) {
 
 	function handleMouseUp( /*event*/ ) {
 
-		// no-op
+     	// no-op
 
 	}
 
@@ -879,23 +881,26 @@ var OrbitControls = function ( object, domElement ) {
 			case STATE.ROTATE:
 
 				if ( scope.enableRotate === false ) return;
-
+       
 				handleMouseMoveRotate( event );
+                
 
 				break;
 
 			case STATE.DOLLY:
 
 				if ( scope.enableZoom === false ) return;
-
+                            
 				handleMouseMoveDolly( event );
 
+                
+                
 				break;
 
 			case STATE.PAN:
 
 				if ( scope.enablePan === false ) return;
-
+            
 				handleMouseMovePan( event );
 
 				break;
@@ -908,12 +913,13 @@ var OrbitControls = function ( object, domElement ) {
 
 		if ( scope.enabled === false ) return;
 
+     
 		handleMouseUp( event );
 
 		document.removeEventListener( 'mousemove', onMouseMove, false );
 		document.removeEventListener( 'mouseup', onMouseUp, false );
-
-		scope.dispatchEvent( endEvent );
+        
+  		scope.dispatchEvent( endEvent );
 
 		state = STATE.NONE;
 
